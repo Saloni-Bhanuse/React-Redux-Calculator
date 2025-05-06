@@ -6,9 +6,9 @@ const Display: React.FC = () => {
   const displayValue = useSelector((state: RootState) => state.calculator.displayValue);
 
   return (
-    <output className="calculator-display">
-      {displayValue}
-    </output>
+      <output className="calculator-display">
+        {displayValue}
+      </output>
   );
 };
 

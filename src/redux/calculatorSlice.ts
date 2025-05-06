@@ -6,6 +6,7 @@ interface CalculatorState {
   previousValue: string;
   operation: string | null;
   waitingForOperand: boolean;
+  error?: string; // <-- Add error field
 }
 
 const initialState: CalculatorState = {
@@ -13,6 +14,7 @@ const initialState: CalculatorState = {
   previousValue: '',
   operation: null,
   waitingForOperand: false,
+  error: '', // <-- Add error field
 };
 
 const calculatorSlice = createSlice({
@@ -23,15 +25,28 @@ const calculatorSlice = createSlice({
       const { displayValue, waitingForOperand } = state;
       const digit = action.payload;
 
+      // Clear error on new input
+      state.error = '';
+
       if (waitingForOperand) {
         state.displayValue = digit;
         state.waitingForOperand = false;
       } else {
-        state.displayValue = displayValue === '0' ? digit : displayValue + digit;
+        // Block leading zeros
+        if (displayValue === '0') {
+          state.displayValue = digit;
+        } else if (displayValue === '-0') {
+          state.displayValue = '-' + digit;
+        } else {
+          state.displayValue = displayValue + digit;
+        }
       }
     },
     inputDecimal: (state) => {
       const { displayValue, waitingForOperand } = state;
+
+      // Clear error on new input
+      state.error = '';
 
       if (waitingForOperand) {
         state.displayValue = '0.';
@@ -42,18 +57,18 @@ const calculatorSlice = createSlice({
     },
     clearDisplay: (state) => {
       state.displayValue = '0';
+      state.error = '';
     },
     clearAll: () => {
-      return initialState;
+      return { ...initialState };
     },
     toggleSign: (state) => {
-      // Toggle the sign of the current display value
       state.displayValue = state.displayValue.charAt(0) === '-' 
         ? state.displayValue.substring(1) 
         : '-' + state.displayValue;
     },
     inputPercent: (state) => {
-      // Convert the current display value to a percentage
+      state.error = '';
       const value = parseFloat(state.displayValue) / 100;
       state.displayValue = String(value);
     },
@@ -62,6 +77,8 @@ const calculatorSlice = createSlice({
       const inputValue = parseFloat(displayValue);
       const prevValue = parseFloat(previousValue);
       let newValue = 0;
+
+      state.error = '';
 
       if (previousValue && operation) {
         switch (operation) {
@@ -75,13 +92,21 @@ const calculatorSlice = createSlice({
             newValue = prevValue * inputValue;
             break;
           case '÷':
+            if (inputValue === 0) {
+              state.displayValue = 'Error';
+              state.previousValue = '';
+              state.operation = null;
+              state.waitingForOperand = true;
+              state.error = 'Cannot divide by 0';
+              return;
+            }
             newValue = prevValue / inputValue;
             break;
           default:
             newValue = inputValue;
         }
-        state.displayValue = String(newValue);
-        state.previousValue = String(newValue);
+        state.displayValue = String(Number(newValue.toPrecision(12)));
+        state.previousValue = String(Number(newValue.toPrecision(12)));
       } else {
         state.previousValue = displayValue;
       }
@@ -92,6 +117,8 @@ const calculatorSlice = createSlice({
     calculateResult: (state) => {
       const { displayValue, previousValue, operation } = state;
       
+      state.error = '';
+
       if (!previousValue || !operation) return;
       
       const inputValue = parseFloat(displayValue);
@@ -109,13 +136,21 @@ const calculatorSlice = createSlice({
           newValue = prevValue * inputValue;
           break;
         case '÷':
+          if (inputValue === 0) {
+            state.displayValue = 'Error';
+            state.previousValue = '';
+            state.operation = null;
+            state.waitingForOperand = true;
+            state.error = 'Cannot divide by 0';
+            return;
+          }
           newValue = prevValue / inputValue;
           break;
         default:
           return;
       }
 
-      state.displayValue = String(newValue);
+      state.displayValue = String(Number(newValue.toPrecision(12)));
       state.previousValue = '';
       state.operation = null;
       state.waitingForOperand = true;
