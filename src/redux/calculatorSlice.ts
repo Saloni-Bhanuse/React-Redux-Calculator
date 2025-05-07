@@ -239,7 +239,7 @@ function performArithmetic(a: string, b: string, operator: string): Decimal | { 
         return decimalA
     }
   } catch (e) {
-    return { error: "Invalid Operation" }
+    return { error: `Invalid Operation ${e}` }
   }
 }
 
