@@ -1,54 +1,48 @@
-# React + TypeScript + Vite
+# React Redux Calculator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern calculator app built with **React**, **Redux Toolkit**, and **TypeScript**.  
+This project demonstrates advanced state management, keyboard accessibility, and performance optimizations.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Basic Arithmetic:** Addition, subtraction, multiplication, and division using precise decimal math.
+- **Keyboard Support:** Full keyboard operation, including numpad and top-row keys, with support for Shift-combinations (e.g., Shift + `=` for `+`).
+- **Redux State Management:** All calculator logic and state are managed via Redux Toolkit.
+- **Error Handling:** Graceful handling of invalid operations (e.g., division by zero).
+- **Optimized Rendering:** Uses `React.memo` for buttons and split selectors for display to minimize unnecessary re-renders.
+- **Responsive UI:** Clean, accessible, and responsive design.
+- **Backspace & Clear:** Backspace deletes the last digit; Escape or AC clears all.
+- **Percent, Sign Toggle:** Supports percent and sign toggle operations.
+- **Result Formatting:** Results are shown without trailing decimals for integers (e.g., `300` instead of `300.00`).
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Keyboard Shortcuts
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+| Key Pressed         | Calculator Action      |
+|---------------------|-----------------------|
+| 0-9                 | Input digit           |
+| . or ,              | Decimal point         |
+| + / Shift+=         | Add                   |
+| -                   | Subtract              |
+| * or ×              | Multiply              |
+| / or ÷              | Divide                |
+| Enter or =          | Equals                |
+| Backspace           | Delete last input     |
+| Escape              | All Clear (AC)        |
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Screenshot
+
+![Calculator Screenshot](public/screenshot.png)
+
+---
+
+## Commands
+
+To install dependencies:
+```bash
+npm install

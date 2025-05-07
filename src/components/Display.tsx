@@ -24,9 +24,24 @@ const Display: React.FC = () => {
           justifyContent: 'center',
           width: '100%',
           height: '100%',
+          padding: '4px',
         }}
       >
-        {expressionString && (
+        <span
+            style={{
+              fontSize: '20px',
+              color: 'rgba(255,255,255,0.7)',
+              minHeight: '24px',
+              marginBottom: '4px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              width: '100%',
+              textAlign: 'right',
+            }}
+          >
+            {/* {expressionString} */}
+          </span>
+        {/* {expressionString && ( */}
           <span
             style={{
               fontSize: '20px',
@@ -41,8 +56,15 @@ const Display: React.FC = () => {
           >
             {expressionString}
           </span>
-        )}
-        <span>
+        {/* )} */}
+        {/* <span>
+          {error ? error : currentInput}
+        </span> */}
+         <span
+          style={{
+            fontSize: error ? '30px' : undefined,
+          }}
+        >
           {error ? error : currentInput}
         </span>
       </output>
