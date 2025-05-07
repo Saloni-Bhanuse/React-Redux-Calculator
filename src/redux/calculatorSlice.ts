@@ -185,6 +185,7 @@
 //   performOperation,
 //   calculateResult,
 //   clearError,
+//   backspace, // <-- add this
 // } = calculatorSlice.actions;
 
 // export default calculatorSlice.reducer;
@@ -470,6 +471,20 @@ const calculatorSlice = createSlice({
       state.currentInput = "0"
       state.waitingForOperand = false
     },
+
+    backspace: (state) => {
+      if (state.error || state.lastPressedEquals) {
+        state.currentInput = "0";
+        state.error = "";
+        state.lastPressedEquals = false;
+        return;
+      }
+      if (state.currentInput.length > 1) {
+        state.currentInput = state.currentInput.slice(0, -1);
+      } else {
+        state.currentInput = "0";
+      }
+    },
   },
 })
 
@@ -482,6 +497,7 @@ export const {
   performOperation,
   calculateResult,
   clearError,
-} = calculatorSlice.actions
+  backspace, // <-- add this
+} = calculatorSlice.actions;
 
 export default calculatorSlice.reducer
