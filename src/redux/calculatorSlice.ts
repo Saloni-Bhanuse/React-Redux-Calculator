@@ -454,7 +454,6 @@ const calculatorSlice = createSlice({
       }
 
       // Save the full expression before showing the result
-      const fullExpression = state.expression
 
       state.result = formatResult(result)
       state.currentInput = state.result
