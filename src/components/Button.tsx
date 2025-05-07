@@ -6,7 +6,7 @@ interface ButtonProps {
   children: React.ReactNode;
 }
 
-const Button: React.FC<ButtonProps> = ({ onClick, className = '', children }) => {
+const Button: React.FC<ButtonProps> = React.memo(({ onClick, className = '', children }) => {
   return (
     <button 
       className={`calculator-button ${className}`} 
@@ -15,6 +15,6 @@ const Button: React.FC<ButtonProps> = ({ onClick, className = '', children }) =>
       {children}
     </button>
   );
-};
+});
 
 export default Button;
