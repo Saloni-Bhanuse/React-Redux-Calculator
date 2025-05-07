@@ -244,11 +244,13 @@ function performArithmetic(a: string, b: string, operator: string): Decimal | { 
 
 // Format result to avoid floating point issues and excessive decimals
 function formatResult(decimal: Decimal): string {
-  // Round to 10 significant digits to avoid floating point errors
-  const result = decimal.toSignificantDigits(10)
-
-  // Convert to string and remove trailing zeros after decimal
-  return result.toString().replace(/(\.\d*?[1-9])0+$|\.0+$/, "$1")
+  // Always round to 2 decimal places for display
+  const result = decimal.toDecimalPlaces(2, Decimal.ROUND_HALF_UP);
+  // If the result is an integer, show without decimals; otherwise, show two decimals
+  if (result.isInteger()) {
+    return result.toFixed(0);
+  }
+  return result.toFixed(2);
 }
 
 const calculatorSlice = createSlice({
@@ -343,7 +345,7 @@ const calculatorSlice = createSlice({
     inputPercent: (state) => {
       try {
         const value = new Decimal(state.currentInput).div(100)
-        state.currentInput = formatResult(value)
+        state.currentInput = value.toPrecision(10).replace(/\.?0+$/, '');
       } catch {
         state.error = "Invalid Input"
       }
